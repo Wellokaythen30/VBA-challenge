@@ -1,0 +1,55 @@
+Sub Worksheets_Macro()
+Dim xSh As Worksheet
+    Application.ScreenUpdating = False
+    For Each xSh In Worksheets
+        xSh.Select
+        Call Stock_Info
+    Next
+    Application.ScreenUpdating = True
+End Sub
+Sub Stock_Info()
+
+'Declarations
+Dim WS_Count As Integer
+Dim I As Integer
+Dim ws As Worksheet
+Dim ticker_summary As Integer
+Dim total_volume As Variant
+
+lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+
+ticker_summary = 2
+total_volume = CDec(0)
+
+For Each ws In Worksheets
+ws.Range("I1").Value = "Ticker"
+ws.Range("J1").Value = "Yearly Change"
+ws.Range("K1").Value = "Percent Change"
+ws.Range("L1").Value = "Total Stock Volume"
+ws.Range("P1").Value = "Ticker"
+ws.Range("Q1").Value = "Value"
+ws.Range("O2").Value = "Greatest % Increase"
+ws.Range("O3").Value = "Greatest % Decrease"
+ws.Range("O4").Value = "Greatest Total Volume"
+
+Next
+
+For I = 2 To lastrow
+
+    total_volume = total_volume + Cells(I, 7).Value
+    
+    If Cells(I, 1).Value <> Cells(I + 1, 1).Value Then
+    
+    
+        Cells(ticker_summary, 9).Value = Cells(I, 1).Value
+        Cells(ticker_summary, 12).Value = total_volume
+        
+        ticker_summary = ticker_summary + 1
+        
+        total_volume = 0
+        
+    End If
+    
+Next I
+
+End Sub
